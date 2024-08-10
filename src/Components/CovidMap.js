@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import { MapUtils } from '../Utils/MapUtils';
-import { CovidDataService } from '../Service/CovidDataService';
+import { EventService } from '../Service/EventDataService';
 import CaseCard from './CaseCard';
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
@@ -18,7 +18,8 @@ class CovidMap extends Component {
   state = {
       zoomLevel: 6,
       boundary: {},
-      points: {}
+      points: {},
+      venues:{}
   }
 
   render() {
@@ -31,16 +32,17 @@ class CovidMap extends Component {
           defaultZoom={this.props.zoom}
           onGoogleApiLoaded={
               () => {
-                  CovidDataService.getAllCountyCases()
+                  EventService.getNearbyVenues()
                     .then(response => {
                         this.setState({
-                            points: MapUtils.convertCovidPoints(response.data)
+                            venues: MapUtils.parseVenueNames(response)
                         });
                     }).catch(error => {
                         console.error(error);
                   })
               }
           }
+          
           onChange={(changeEventObject) => {
             this.setState({
                 zoomLevel: changeEventObject.zoom,

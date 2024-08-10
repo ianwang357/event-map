@@ -31,7 +31,7 @@ export const MapUtils = {
             stateData[point.province].confirmed += point.stats.confirmed;
             stateData[point.province].deaths += point.stats.deaths;
 
-            // initialize坐标和country
+            // initialize coords and country
             if (!stateData[point.province].coordinates) {
                 stateData[point.province].coordinates = point.coordinates;
             }
@@ -47,5 +47,15 @@ export const MapUtils = {
     isInBoundary: function (bounds, coordinates) {
         return coordinates && bounds && bounds.nw && bounds.se && ((coordinates.longitude >= bounds.nw.lng && coordinates.longitude <= bounds.se.lng) || (coordinates.longitude <= bounds.nw.lng && coordinates.longitude >= bounds.se.lng))
             && ((coordinates.latitude >= bounds.se.lat && coordinates.latitude <= bounds.nw.lat) || (coordinates.latitude <= bounds.se.lat && coordinates.latitude >= bounds.nw.lat));
+    },
+    parseVenueNames: function (jsonData) {
+        try {
+            const data = JSON.parse(jsonData);
+            const venueNames = data.results.map(result => result.name);
+            return venueNames;
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
+            return [];
+        }
     }
 };
