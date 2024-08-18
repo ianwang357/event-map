@@ -9,11 +9,11 @@
 ## About The Project
 
 
-I have built an interactive covid map to present the current data. This product can help you track covid, understand where it is spreading and make precoutions accordingly.
+I have built an Events Map that shows nearby events and the cheapest rate (linked) as you zoom in and out on a google map. 
 
 Here's why:
-* Covid has been a long and painful time of our life. To have a tracker, it is a peace of mind.
-* As someone who travel a lot for work, it is benificial to know where the pandemic is heavy.
+* As someone who travel a lot, I would like to stay on budget and be able to quickly access whats the fun events near me with the cheapest rate
+* Using a map to search for events gives you more "suprise" and increase user interactivity
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -21,8 +21,6 @@ Here's why:
 
 
 ### Built With
-
-
 
 
 * [React.js](https://reactjs.org/)
@@ -41,7 +39,7 @@ Please install the dependencies below
 
 * react
   ```sh
-  npx create-react-app covid-map
+  npx create-react-app EventMap
   ```
 
 * google lib
@@ -64,7 +62,7 @@ Please install the dependencies below
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/ianwang357/covid-map.git
+   git clone https://github.com/ianwang357/event-map.git
    ```
 2. Install dependencies
 3. run the code with 
@@ -81,7 +79,7 @@ Please install the dependencies below
 ## Contact
 
 
-Project Link: [https://github.com/ianwang357/covid-map](https://github.com/ianwang357/covid-map)
+Project Link: [https://github.com/ianwang357/covid-map](https://github.com/ianwang357/event-map)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
