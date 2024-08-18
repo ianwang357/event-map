@@ -1,10 +1,10 @@
 import './App.css';
-import CovidMap from './Components/CovidMap';
+import EventMap from './Components/EventMap';
 
 function App() {
   return (
     <div>
-      <CovidMap></CovidMap>
+      <EventMap></EventMap>
     </div>
   );
 }

@@ -10,19 +10,20 @@ export default function CaseCard(props) {
     <Card sx={{ minWidth: 200 }}>
       <CardContent>
         <Typography sx={{ fontSize: 12 }} color="text.secondary" gutterBottom>
-         {props.subTitle}
+         {props.url}
         </Typography>
          
         <Typography variant="h5" component="div">
-         {props.title}
+         {props.name}
         </Typography>
          
         <Typography variant="body2">
-         Confirmed: {props.confirmed}
+         Venue: {props.venue}
         </Typography>
 
+
         <Typography variant="body2">
-          Death: { props.deaths}
+          Ticket Price: { props.price }
         </Typography>
       </CardContent>
     </Card>

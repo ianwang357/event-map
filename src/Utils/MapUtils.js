@@ -1,61 +1,45 @@
+const geohash = require('ngeohash');
 export const MapUtils = {
     // aggregate county level raw data to states and nations levels
-    convertCovidPoints: function(countyLevelPoints) {
-        if (!countyLevelPoints) { // sanity check
-            return {};
+    convertEvents: function(events) {
+        if (!events) { // sanity check
+            return [];
         }
-
-        let result = {
-            'county': countyLevelPoints,
-            'state': {},
-            'nation': {}
-        };
-
-        let stateData = {};
+        let EventData = [];
         // aggregate data by state
-        for (const point of countyLevelPoints) {
+        for (const point of events) {
             // sanity check
-            if (Number.isNaN(point.stats.confirmed) || Number.isNaN(point.stats.deaths)) {
-                console.error('Got dirty data', point);
+            if (!point || !point._embedded || !point._embedded.venues || point._embedded.venues.length === 0) {
                 continue;
             }
-            // Initialize the new province
-            if (!stateData[point.province]) {
-                stateData[point.province] = {
-                    confirmed: 0,
-                    deaths: 0,
-                };
+            const venue = point._embedded.venues[0]; // Assuming there's at least one venue per event
+            const coordinates = venue.location; // Extract the coordinates
+
+            if (!coordinates) {
+                continue; // Skip if coordinates are missing
             }
 
-            // aggregate
-            stateData[point.province].confirmed += point.stats.confirmed;
-            stateData[point.province].deaths += point.stats.deaths;
-
-            // initialize coords and country
-            if (!stateData[point.province].coordinates) {
-                stateData[point.province].coordinates = point.coordinates;
-            }
-            if (!stateData[point.province].country) {
-                stateData[point.province].country = point.country;
-            }
+            // Append the event data directly to the eventData array
+            EventData.push({
+                name: point.name,
+                lat: parseFloat(coordinates.latitude),
+                lng: parseFloat(coordinates.longitude),
+                venueName: venue.name,
+                url: point.url,
+                price: point.priceRanges ? point.priceRanges[0].min : 'Not Available'
+            });
         }
-        result['state'] = stateData;
-
-        //TODO: aggregate data by nation
-        return result;
+        return EventData;
     },
-    isInBoundary: function (bounds, coordinates) {
+    isInBoundary: function (bounds, lat, lng) {
+        const coordinates = {
+            latitude: lat,
+            longitude: lng
+        };
         return coordinates && bounds && bounds.nw && bounds.se && ((coordinates.longitude >= bounds.nw.lng && coordinates.longitude <= bounds.se.lng) || (coordinates.longitude <= bounds.nw.lng && coordinates.longitude >= bounds.se.lng))
             && ((coordinates.latitude >= bounds.se.lat && coordinates.latitude <= bounds.nw.lat) || (coordinates.latitude <= bounds.se.lat && coordinates.latitude >= bounds.nw.lat));
     },
-    parseVenueNames: function (jsonData) {
-        try {
-            const data = JSON.parse(jsonData);
-            const venueNames = data.results.map(result => result.name);
-            return venueNames;
-        } catch (error) {
-            console.error('Error parsing JSON:', error);
-            return [];
-        }
+    createGeoPoint: function(latitude, longitude) {
+        return geohash.encode(latitude, longitude, 8);
     }
 };
